@@ -207,6 +207,40 @@ section{padding:80px 48px}
   .profile-photo{min-height:320px}
   .profile-name{font-size:24px}
 }
+
+/* GALLERY SLIDESHOW */
+#gallery{background:#0a0a0a;padding:0;overflow:hidden}
+.gallery-header{padding:60px 48px 40px;display:flex;justify-content:space-between;align-items:flex-end}
+.gallery-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,42px);font-weight:300;color:#e8e3d8}
+.gallery-count{font-size:10px;letter-spacing:3px;color:#555}
+.swiper-track-wrap{overflow:hidden;cursor:grab;user-select:none;padding-bottom:60px}
+.swiper-track-wrap:active{cursor:grabbing}
+.swiper-track{display:flex;gap:16px;padding:0 48px;transition:transform 0.05s linear;will-change:transform}
+.swiper-slide-img{flex-shrink:0;width:clamp(240px,38vw,480px);height:clamp(300px,55vw,600px);object-fit:cover;display:block;filter:grayscale(15%);transition:filter 0.4s}
+.swiper-slide-img:hover{filter:grayscale(0)}
+.gallery-nav{display:flex;gap:12px;padding:0 48px 48px;align-items:center}
+.gallery-nav-btn{background:none;border:1px solid #2a2a2a;color:#666;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;flex-shrink:0}
+.gallery-nav-btn:hover{border-color:#b8a898;color:#e8e3d8}
+.gallery-progress{flex:1;height:1px;background:#1a1a1a;position:relative}
+.gallery-progress-bar{height:100%;background:#b8a898;width:0%;transition:width 0.3s ease}
+
+/* LIGHTBOX */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:2000;align-items:center;justify-content:center}
+#lightbox.active{display:flex}
+.lb-img{max-width:90vw;max-height:90vh;object-fit:contain;display:block}
+.lb-close{position:fixed;top:24px;right:28px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1;opacity:0.7;transition:opacity 0.2s}
+.lb-close:hover{opacity:1}
+.lb-prev,.lb-next{position:fixed;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:20px;opacity:0.5;transition:opacity 0.2s}
+.lb-prev:hover,.lb-next:hover{opacity:1}
+.lb-prev{left:16px}
+.lb-next{right:16px}
+.lb-counter{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:3px;color:#888}
+@media(max-width:768px){
+  .gallery-header{padding:40px 24px 24px}
+  .swiper-track{padding:0 24px;gap:10px}
+  .swiper-slide-img{width:75vw;height:65vw}
+  .gallery-nav{padding:0 24px 40px}
+}
 </style>
 </head>
 <body>
@@ -303,7 +337,7 @@ section{padding:80px 48px}
       </div>
     </div>
     <div class="profile-card">
-      <img class="profile-photo" src="./images/groom.png" alt="Abbyan Nur Faizy">
+      <img class="profile-photo" src="./images/groom.jpeg" alt="Abbyan Nur Faizy">
       <div class="profile-info">
         <p class="profile-role">The Groom</p>
         <p class="profile-name">Abbyan Nur Faizy</p>
@@ -347,6 +381,47 @@ section{padding:80px 48px}
 </section>
 
 <!-- WEDDING EVENT -->
+
+<!-- GALLERY -->
+<section id="gallery" style="padding:0">
+  <div class="gallery-header">
+    <div>
+      <p class="section-label">Gallery</p>
+      <h2 class="gallery-title">Our Moments</h2>
+    </div>
+    <p class="gallery-count">7 photos</p>
+  </div>
+  <div class="swiper-track-wrap" id="swiperWrap">
+    <div class="swiper-track" id="swiperTrack">
+      <img class="swiper-slide-img" src="./images/slideshow1.jpg" alt="Moment 1" draggable="false">
+      <img class="swiper-slide-img" src="./images/slideshow2.jpg" alt="Moment 2" draggable="false">
+      <img class="swiper-slide-img" src="./images/slideshow3.jpg" alt="Moment 3" draggable="false">
+      <img class="swiper-slide-img" src="./images/slideshow4jpg.jpg" alt="Moment 4" draggable="false">
+      <img class="swiper-slide-img" src="./images/slideshow5.jpg" alt="Moment 5" draggable="false">
+      <img class="swiper-slide-img" src="./images/slideshow6.jpg" alt="Moment 6" draggable="false">
+      <img class="swiper-slide-img" src="./images/slideshow7.jpg" alt="Moment 7" draggable="false">
+    </div>
+  </div>
+  <div class="gallery-nav">
+    <button class="gallery-nav-btn" id="galleryPrev" aria-label="Previous">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="gallery-nav-btn" id="galleryNext" aria-label="Next">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="gallery-progress"><div class="gallery-progress-bar" id="galleryBar"></div></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button class="lb-close" id="lbClose">✕</button>
+  <button class="lb-prev" id="lbPrev">❮</button>
+  <img class="lb-img" id="lbImg" src="" alt="">
+  <button class="lb-next" id="lbNext">❯</button>
+  <p class="lb-counter" id="lbCounter"></p>
+</div>
+
 <section id="weddingevent" style="padding:0">
   <div class="event-marquee-wrap">
     <div class="event-marquee">
@@ -711,6 +786,110 @@ document.getElementById('openBtn').addEventListener('click', () => {
   setTimeout(tryPlay, 900);
 });
 }); // end DOMContentLoaded
+
+
+// GALLERY SWIPER
+(function() {
+  const wrap = document.getElementById('swiperWrap');
+  const track = document.getElementById('swiperTrack');
+  const imgs = track.querySelectorAll('.swiper-slide-img');
+  const prevBtn = document.getElementById('galleryPrev');
+  const nextBtn = document.getElementById('galleryNext');
+  const bar = document.getElementById('galleryBar');
+
+  let current = 0;
+  const total = imgs.length;
+  const gap = 16;
+
+  function getSlideWidth() {
+    return imgs[0].offsetWidth + gap;
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, total - 1));
+    track.style.transition = 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)';
+    track.style.transform = 'translateX(-' + (current * getSlideWidth()) + 'px)';
+    bar.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  // Drag to swipe
+  let startX = 0, isDragging = false, startTranslate = 0;
+  wrap.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.clientX;
+    startTranslate = current * getSlideWidth();
+    track.style.transition = 'none';
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const diff = startX - e.clientX;
+    track.style.transform = 'translateX(-' + (startTranslate + diff) + 'px)';
+  });
+  window.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const diff = startX - e.clientX;
+    if (Math.abs(diff) > 60) goTo(diff > 0 ? current + 1 : current - 1);
+    else goTo(current);
+  });
+
+  // Touch swipe
+  wrap.addEventListener('touchstart', e => { startX = e.touches[0].clientX; track.style.transition = 'none'; }, {passive:true});
+  wrap.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+    else goTo(current);
+  });
+
+  // Init progress bar
+  bar.style.width = (1 / total * 100) + '%';
+
+  // LIGHTBOX
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCounter = document.getElementById('lbCounter');
+  let lbCurrent = 0;
+  const lbSrcs = Array.from(imgs).map(i => i.src);
+
+  function openLb(idx) {
+    lbCurrent = idx;
+    lbImg.src = lbSrcs[lbCurrent];
+    lbCounter.textContent = (lbCurrent + 1) + ' / ' + total;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function lbGo(dir) {
+    lbCurrent = (lbCurrent + dir + total) % total;
+    lbImg.src = lbSrcs[lbCurrent];
+    lbCounter.textContent = (lbCurrent + 1) + ' / ' + total;
+  }
+
+  imgs.forEach((img, i) => img.addEventListener('click', () => openLb(i)));
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbPrev').addEventListener('click', () => lbGo(-1));
+  document.getElementById('lbNext').addEventListener('click', () => lbGo(1));
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'ArrowLeft') lbGo(-1);
+    if (e.key === 'ArrowRight') lbGo(1);
+    if (e.key === 'Escape') closeLb();
+  });
+
+  // Touch swipe on lightbox
+  let lbStartX = 0;
+  lb.addEventListener('touchstart', e => { lbStartX = e.touches[0].clientX; }, {passive:true});
+  lb.addEventListener('touchend', e => {
+    const diff = lbStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) lbGo(diff > 0 ? 1 : -1);
+  });
+})();
 
 </script>
 
