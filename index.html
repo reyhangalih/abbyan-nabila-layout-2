@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbyan & Nabila — 24.08.2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #EDE8DF;
+    --black: #0E0E0E;
+    --red: #C41E3A;
+    --gray: #6B6560;
+    --light: #D4CFC6;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--cream);
+    font-family: 'DM Mono', monospace;
+    overflow: hidden;
+    cursor: default;
+  }
+
+  /* ─── GRAIN OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ─── HOMEPAGE GRID ─── */
+  #home {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px;
+    background: var(--black);
+    padding: 1px;
+  }
+
+  .cell {
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s ease, color 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .cell:hover { background: var(--black); color: var(--cream); }
+  .cell:hover .cell-label { color: var(--cream); }
+  .cell:hover .cell-sub { color: #888; }
+  .cell:hover .cell-num { color: var(--cream); }
+  .cell:hover svg { stroke: var(--cream); }
+
+  .cell-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(10px, 2vw, 22px);
+    letter-spacing: 0.05em;
+    color: var(--black);
+    text-align: center;
+    line-height: 1.1;
+    transition: color 0.25s;
+    pointer-events: none;
+  }
+
+  .cell-sub {
+    font-size: clamp(7px, 0.8vw, 10px);
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-top: 4px;
+    transition: color 0.25s;
+    pointer-events: none;
+  }
+
+  .cell-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 6vw, 80px);
+    color: var(--black);
+    line-height: 1;
+    transition: color 0.25s;
+    pointer-events: none;
+  }
+
+  /* INVERTED cells */
+  .cell.inv { background: var(--black); }
+  .cell.inv .cell-label { color: var(--cream); }
+  .cell.inv .cell-sub { color: #777; }
+  .cell.inv .cell-num { color: var(--cream); }
+  .cell.inv:hover { background: var(--red); }
+
+  /* ACCENT cells */
+  .cell.accent { background: var(--red); }
+  .cell.accent .cell-label { color: var(--cream); }
+  .cell.accent:hover { background: var(--black); }
+
+  /* NAMES cell */
+  .cell.names {
+    grid-column: 1 / 6;
+    grid-row: 1 / 5;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(12px, 2vw, 28px);
+    cursor: default;
+  }
+  .cell.names:hover { background: var(--cream); }
+
+  .names-top {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(8px, 0.8vw, 11px);
+    letter-spacing: 0.2em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: clamp(8px, 1.5vw, 16px);
+  }
+
+  .names-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 6vw, 88px);
+    line-height: 0.92;
+    color: var(--black);
+    letter-spacing: 0.01em;
+  }
+
+  .names-amp {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 3vw, 42px);
+    font-style: italic;
+    color: var(--gray);
+    margin: 4px 0;
+    display: block;
+  }
+
+  .names-date {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(8px, 0.75vw, 11px);
+    letter-spacing: 0.18em;
+    color: var(--gray);
+    margin-top: clamp(8px, 1.5vw, 20px);
+  }
+
+  /* Grid layout assignments */
+  .c-photo   { grid-column: 6 / 10;  grid-row: 1 / 5; flex-direction: column; padding: 0; }
+  .c-date    { grid-column: 10 / 13; grid-row: 1 / 3; flex-direction: column; }
+  .c-quote   { grid-column: 10 / 13; grid-row: 3 / 5; padding: clamp(8px, 1.2vw, 16px); }
+  .c-akad    { grid-column: 1 / 4;   grid-row: 5 / 8; flex-direction: column; }
+  .c-resepsi { grid-column: 4 / 7;   grid-row: 5 / 8; flex-direction: column; }
+  .c-story   { grid-column: 7 / 10;  grid-row: 5 / 8; flex-direction: column; }
+  .c-rsvp    { grid-column: 10 / 13; grid-row: 5 / 8; flex-direction: column; }
+  .c-dot1    { grid-column: 1 / 2;   grid-row: 8 / 10; }
+  .c-amplop  { grid-column: 2 / 5;   grid-row: 8 / 10; flex-direction: column; }
+  .c-words   { grid-column: 5 / 9;   grid-row: 8 / 10; padding: clamp(8px,1vw,14px); }
+  .c-dress   { grid-column: 9 / 11;  grid-row: 8 / 10; flex-direction: column; }
+  .c-info    { grid-column: 11 / 13; grid-row: 8 / 10; flex-direction: column; }
+  .c-footer  { grid-column: 1 / 13;  grid-row: 10 / 11; flex-direction: row; justify-content: space-between; padding: 0 clamp(12px,2vw,28px); cursor: default; }
+  .c-footer:hover { background: var(--cream); }
+
+  .c-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.1);
+    display: block;
+  }
+
+  .c-photo .photo-label {
+    position: absolute;
+    bottom: 10px; left: 10px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
+
+  .c-quote .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(9px, 1vw, 13px);
+    font-style: italic;
+    color: var(--black);
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .c-words .words-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(11px, 1.3vw, 17px);
+    font-style: italic;
+    color: var(--black);
+    line-height: 1.5;
+  }
+
+  .c-footer .f-left {
+    font-size: clamp(8px, 0.7vw, 10px);
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .c-footer .f-right {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(12px, 1.5vw, 20px);
+    letter-spacing: 0.1em;
+    color: var(--black);
+  }
+
+  /* countdown */
+  .countdown-wrap { text-align: center; }
+  .countdown-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 7vw, 100px);
+    color: var(--cream);
+    line-height: 1;
+  }
+  .countdown-label {
+    font-size: clamp(7px, 0.7vw, 9px);
+    letter-spacing: 0.2em;
+    color: #777;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* dot */
+  .dot {
+    width: clamp(20px, 3vw, 40px);
+    height: clamp(20px, 3vw, 40px);
+    border-radius: 50%;
+    background: var(--red);
+    transition: transform 0.3s ease;
+  }
+  .c-dot1:hover .dot { transform: scale(1.3); background: var(--cream); }
+  .c-dot1:hover { background: var(--red); }
+  .c-dot1 { cursor: default; }
+
+  /* ─── PANEL OVERLAY ─── */
+  .panel {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.4s cubic-bezier(.4,0,.2,1), transform 0.4s cubic-bezier(.4,0,.2,1);
+  }
+
+  .panel.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+
+  .panel-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(14px,2vw,24px) clamp(20px,4vw,60px);
+    border-bottom: 1px solid var(--black);
+    background: var(--cream);
+  }
+
+  .panel-back {
+    font-size: clamp(9px,0.8vw,11px);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    font-family: 'DM Mono', monospace;
+    transition: opacity 0.2s;
+  }
+  .panel-back:hover { opacity: 0.5; }
+
+  .panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(14px,1.8vw,24px);
+    letter-spacing: 0.08em;
+    color: var(--black);
+  }
+
+  .panel-index {
+    font-size: clamp(9px,0.8vw,11px);
+    letter-spacing: 0.15em;
+    color: var(--gray);
+  }
+
+  .panel-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(24px,4vw,60px);
+    overflow-y: auto;
+  }
+
+  /* ── PANEL CONTENT STYLES ── */
+  .p-content {
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .p-eyebrow {
+    font-size: clamp(9px,0.8vw,11px);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: clamp(12px,2vw,24px);
+  }
+
+  .p-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px,8vw,110px);
+    line-height: 0.9;
+    color: var(--black);
+    margin-bottom: clamp(16px,2.5vw,32px);
+  }
+
+  .p-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(14px,1.4vw,19px);
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: clamp(12px,1.5vw,20px);
+  }
+
+  .p-detail {
+    font-size: clamp(9px,0.85vw,12px);
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    text-transform: uppercase;
+    border-top: 0.5px solid #ccc;
+    padding-top: clamp(12px,1.5vw,20px);
+    margin-top: clamp(12px,1.5vw,20px);
+    line-height: 2;
+  }
+
+  .p-divider {
+    width: 32px;
+    height: 1px;
+    background: var(--black);
+    margin: clamp(16px,2vw,28px) 0;
+  }
+
+  /* RSVP FORM */
+  .rsvp-form { display: flex; flex-direction: column; gap: 12px; }
+  .rsvp-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--black);
+    padding: 10px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(11px,1vw,14px);
+    color: var(--black);
+    outline: none;
+    letter-spacing: 0.05em;
+  }
+  .rsvp-input::placeholder { color: #aaa; }
+
+  .rsvp-radio-row { display: flex; gap: 8px; margin: 4px 0; }
+  .rsvp-radio {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--black);
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(9px,0.85vw,11px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: transparent;
+    color: var(--black);
+    transition: all 0.2s;
+  }
+  .rsvp-radio.sel { background: var(--black); color: var(--cream); }
+
+  .rsvp-btn {
+    width: 100%;
+    background: var(--black);
+    color: var(--cream);
+    border: none;
+    padding: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(13px,1.2vw,17px);
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background 0.2s;
+  }
+  .rsvp-btn:hover { background: var(--red); }
+
+  /* AMPLOP */
+  .bank-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 0.5px solid #ccc;
+  }
+  .bank-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(16px,2vw,28px); color: var(--black); }
+  .bank-atas { font-size: clamp(9px,0.8vw,11px); color: var(--gray); margin-top: 2px; }
+  .bank-num { font-size: clamp(11px,1vw,14px); font-weight: 400; color: var(--black); margin-bottom: 6px; text-align: right; }
+  .copy-btn {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--black);
+    padding: 5px 12px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--black);
+    font-family: 'DM Mono', monospace;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: var(--black); color: var(--cream); }
+
+  /* OUR STORY */
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--black);
+    border: 1px solid var(--black);
+    margin-top: 20px;
+  }
+  .story-photo {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #222;
+  }
+  .story-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 0.4s;
+  }
+  .story-photo:hover img { filter: grayscale(0%); }
+
+  /* DRESS CODE */
+  .dress-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .dress-item {
+    border: 1px solid var(--black);
+    padding: 20px;
+    text-align: center;
+  }
+  .dress-color {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .dress-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--black); }
+  .dress-note { font-size: 10px; color: var(--gray); letter-spacing: 0.1em; margin-top: 4px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--black);
+    color: var(--cream);
+    padding: 10px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: opacity 0.3s;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Stagger animation on load */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .cell { animation: fadeUp 0.5s ease both; }
+  .cell:nth-child(1)  { animation-delay: 0.05s; }
+  .cell:nth-child(2)  { animation-delay: 0.10s; }
+  .cell:nth-child(3)  { animation-delay: 0.15s; }
+  .cell:nth-child(4)  { animation-delay: 0.20s; }
+  .cell:nth-child(5)  { animation-delay: 0.25s; }
+  .cell:nth-child(6)  { animation-delay: 0.30s; }
+  .cell:nth-child(7)  { animation-delay: 0.35s; }
+  .cell:nth-child(8)  { animation-delay: 0.40s; }
+  .cell:nth-child(9)  { animation-delay: 0.45s; }
+  .cell:nth-child(10) { animation-delay: 0.50s; }
+  .cell:nth-child(11) { animation-delay: 0.55s; }
+  .cell:nth-child(12) { animation-delay: 0.60s; }
+  .cell:nth-child(13) { animation-delay: 0.65s; }
+  .cell:nth-child(14) { animation-delay: 0.70s; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HOMEPAGE GRID ═══════════ -->
+<div id="home">
+
+  <!-- NAMES (non-clickable) -->
+  <div class="cell names">
+    <div class="names-top">Wedding Invitation · 2025</div>
+    <div class="names-big">
+      Abbyan<br>Nur Faizy
+      <span class="names-amp">&amp;</span>
+      Nabila<br>Alifia
+    </div>
+    <div class="names-date">24 · 08 · 2025 · Jakarta</div>
+  </div>
+
+  <!-- COVER PHOTO -->
+  <div class="cell c-photo" onclick="openPanel('story')">
+    <img src="https://i.ibb.co/fzwRPkmc/Whats-App-Image-2026-05-06-at-12-53-36.jpg" alt="Abbyan & Nabila">
+    <div class="photo-label">Our Story →</div>
+  </div>
+
+  <!-- DATE / COUNTDOWN -->
+  <div class="cell inv c-date" onclick="openPanel('date')">
+    <div class="countdown-wrap">
+      <div class="countdown-num" id="cd">—</div>
+      <div class="countdown-label">Hari Lagi</div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="cell c-quote" onclick="openPanel('quote')">
+    <div class="quote-text">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan…"</div>
+  </div>
+
+  <!-- AKAD -->
+  <div class="cell inv c-akad" onclick="openPanel('akad')">
+    <div style="text-align:center">
+      <div class="cell-sub" style="color:#777">Akad Nikah</div>
+      <div class="cell-num">08.00</div>
+      <div class="cell-sub" style="color:#777;margin-top:4px">WIB</div>
+    </div>
+  </div>
+
+  <!-- RESEPSI -->
+  <div class="cell c-resepsi" onclick="openPanel('resepsi')">
+    <div style="text-align:center">
+      <div class="cell-sub">Resepsi</div>
+      <div class="cell-num">11.00</div>
+      <div class="cell-sub" style="margin-top:4px">WIB</div>
+    </div>
+  </div>
+
+  <!-- OUR STORY -->
+  <div class="cell accent c-story" onclick="openPanel('story')">
+    <div style="text-align:center">
+      <div class="cell-label" style="font-size:clamp(18px,3.5vw,48px)">OUR<br>STORY</div>
+    </div>
+  </div>
+
+  <!-- RSVP -->
+  <div class="cell inv c-rsvp" onclick="openPanel('rsvp')">
+    <div style="text-align:center">
+      <div class="cell-label">RSVP</div>
+      <div class="cell-sub" style="color:#777;margin-top:6px">Konfirmasi<br>Kehadiran</div>
+    </div>
+  </div>
+
+  <!-- DOT -->
+  <div class="cell c-dot1 inv">
+    <div class="dot"></div>
+  </div>
+
+  <!-- AMPLOP -->
+  <div class="cell c-amplop" onclick="openPanel('amplop')">
+    <div style="text-align:center">
+      <div class="cell-label">AMPLOP<br>DIGITAL</div>
+      <div class="cell-sub" style="margin-top:6px">BCA · Mandiri</div>
+    </div>
+  </div>
+
+  <!-- WORDS -->
+  <div class="cell c-words" onclick="openPanel('quote')">
+    <div class="words-text">"Two people. One story. A lifetime to write."</div>
+  </div>
+
+  <!-- DRESS CODE -->
+  <div class="cell inv c-dress" onclick="openPanel('dress')">
+    <div style="text-align:center">
+      <div class="cell-label">DRESS<br>CODE</div>
+      <div class="cell-sub" style="color:#777;margin-top:6px">Formal Attire</div>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="cell c-info" onclick="openPanel('info')">
+    <div style="text-align:center">
+      <div class="cell-label">INFO &<br>LOKASI</div>
+      <div class="cell-sub" style="margin-top:6px">Jakarta</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="cell c-footer">
+    <div class="f-left">Designed with ♥ · 2025</div>
+    <div class="f-right">Abbyan & Nabila</div>
+    <div class="f-left">24 · 08 · 2025</div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PANELS ═══════════ -->
+
+<!-- AKAD -->
+<div class="panel" id="panel-akad">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('akad')">← Kembali</button>
+    <div class="panel-title">Akad Nikah</div>
+    <div class="panel-index">01 / 07</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content">
+      <div class="p-eyebrow">Sabtu · 24 Agustus 2025</div>
+      <div class="p-big">08.00<br>WIB</div>
+      <div class="p-body">Dengan penuh syukur dan kebahagiaan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir menyaksikan prosesi akad nikah kami.</div>
+      <div class="p-divider"></div>
+      <div class="p-detail">
+        Tempat &nbsp;·&nbsp; Masjid Al-Hikmah<br>
+        Alamat &nbsp;·&nbsp; Jl. Pahlawan No. 12, Jakarta Selatan<br>
+        Waktu &nbsp;&nbsp;·&nbsp; 08.00 – 10.00 WIB
+      </div>
+      <br>
+      <a href="https://maps.google.com" target="_blank" style="display:inline-block;border:1px solid var(--black);padding:12px 24px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--black);text-decoration:none;margin-top:8px;transition:all 0.2s;" onmouseover="this.style.background='#0E0E0E';this.style.color='#EDE8DF'" onmouseout="this.style.background='transparent';this.style.color='#0E0E0E'">↗ Buka Google Maps</a>
+    </div>
+  </div>
+</div>
+
+<!-- RESEPSI -->
+<div class="panel" id="panel-resepsi">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('resepsi')">← Kembali</button>
+    <div class="panel-title">Resepsi</div>
+    <div class="panel-index">02 / 07</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content">
+      <div class="p-eyebrow">Sabtu · 24 Agustus 2025</div>
+      <div class="p-big">11.00<br>WIB</div>
+      <div class="p-body">Kami dengan sepenuh hati mengundang kehadiran Bapak/Ibu/Saudara/i untuk turut merayakan hari bahagia kami di acara resepsi pernikahan.</div>
+      <div class="p-divider"></div>
+      <div class="p-detail">
+        Tempat &nbsp;·&nbsp; Grand Ballroom Hotel Mulia<br>
+        Alamat &nbsp;·&nbsp; Jl. Asia Afrika, Jakarta Selatan<br>
+        Waktu &nbsp;&nbsp;·&nbsp; 11.00 – 14.00 WIB
+      </div>
+      <br>
+      <a href="https://maps.google.com" target="_blank" style="display:inline-block;border:1px solid var(--black);padding:12px 24px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--black);text-decoration:none;margin-top:8px;transition:all 0.2s;" onmouseover="this.style.background='#0E0E0E';this.style.color='#EDE8DF'" onmouseout="this.style.background='transparent';this.style.color='#0E0E0E'">↗ Buka Google Maps</a>
+    </div>
+  </div>
+</div>
+
+<!-- OUR STORY -->
+<div class="panel" id="panel-story">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('story')">← Kembali</button>
+    <div class="panel-title">Our Story</div>
+    <div class="panel-index">03 / 07</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content">
+      <div class="p-eyebrow">Abbyan & Nabila</div>
+      <div class="p-big" style="font-size:clamp(28px,5vw,72px)">Dari Awal<br>Hingga<br>Selamanya</div>
+      <div class="p-body">Setiap pertemuan adalah awal dari sebuah cerita. Dan cerita kami dimulai dengan hal yang sederhana — saling percaya, saling menguatkan, dan saling memilih setiap harinya.</div>
+      <div class="story-grid">
+        <div class="story-photo"><img src="https://i.ibb.co/fzwRPkmc/Whats-App-Image-2026-05-06-at-12-53-36.jpg" alt=""></div>
+        <div class="story-photo"><img src="https://i.ibb.co/23tvRGmK/Whats-App-Image-2026-05-06-at-12-53-35-1.jpg" alt=""></div>
+        <div class="story-photo"><img src="https://i.ibb.co/BmCV36P/Whats-App-Image-2026-05-06-at-12-53-35.jpg" alt=""></div>
+        <div class="story-photo"><img src="https://i.ibb.co/HT7HX1kG/Whats-App-Image-2026-05-06-at-12-53-34.jpg" alt=""></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RSVP -->
+<div class="panel" id="panel-rsvp">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('rsvp')">← Kembali</button>
+    <div class="panel-title">RSVP</div>
+    <div class="panel-index">04 / 07</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content">
+      <div class="p-eyebrow">Konfirmasi Kehadiran</div>
+      <div class="p-big" style="font-size:clamp(28px,5vw,72px)">Hadir<br>Bersama<br>Kami?</div>
+      <div class="rsvp-form">
+        <input class="rsvp-input" id="r-nama" type="text" placeholder="Nama lengkap">
+        <input class="rsvp-input" id="r-tamu" type="text" placeholder="Jumlah tamu (termasuk Anda)">
+        <div class="rsvp-radio-row">
+          <div class="rsvp-radio sel" onclick="selRsvp(this)">Hadir</div>
+          <div class="rsvp-radio" onclick="selRsvp(this)">Tidak Hadir</div>
+        </div>
+        <button class="rsvp-btn" onclick="kirimRsvp()">Konfirmasi Kehadiran</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AMPLOP -->
+<div class="panel" id="panel-amplop">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('amplop')">← Kembali</button>
+    <div class="panel-title">Amplop Digital</div>
+    <div class="panel-index">05 / 07</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content">
+      <div class="p-eyebrow">Hadiah & Doa</div>
+      <div class="p-big" style="font-size:clamp(28px,5vw,72px)">Amplop<br>Digital</div>
+      <div class="p-body">Doa restu Bapak/Ibu/Saudara/i adalah hadiah terbesar bagi kami. Namun jika berkenan, berikut nomor rekening kami.</div>
+      <div class="p-divider"></div>
+      <div class="bank-item">
+        <div><div class="bank-name">BCA</div><div class="bank-atas">a.n. Abbyan Nur Faizy</div></div>
+        <div style="text-align:right">
+          <div class="bank-num">1234567890</div>
+          <button class="copy-btn" onclick="copyText('1234567890')">Salin</button>
+        </div>
+      </div>
+      <div class="bank-item">
+        <div><div class="bank-name">Mandiri</div><div class="bank-atas">a.n. Nabila Alifia</div></div>
+        <div style="text-align:right">
+          <div class="bank-num">0987654321</div>
+          <button class="copy-btn" onclick="copyText('0987654321')">Salin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DRESS CODE -->
+<div class="panel" id="panel-dress">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('dress')">← Kembali</button>
+    <div class="panel-title">Dress Code</div>
+    <div class="panel-index">06 / 07</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content">
+      <div class="p-eyebrow">Kode Berpakaian</div>
+      <div class="p-big" style="font-size:clamp(28px,5vw,72px)">Formal<br>Attire</div>
+      <div class="p-body">Kami mengharapkan kehadiran Bapak/Ibu/Saudara/i dengan berpakaian rapi dan sopan. Berikut palet warna yang kami rekomendasikan.</div>
+      <div class="dress-block">
+        <div class="dress-item">
+          <div class="dress-color" style="background:#C8B89A;"></div>
+          <div class="dress-name">Linen</div>
+          <div class="dress-note">Pria</div>
+        </div>
+        <div class="dress-item">
+          <div class="dress-color" style="background:#D4C5B0;"></div>
+          <div class="dress-name">Dusty Sand</div>
+          <div class="dress-note">Wanita</div>
+        </div>
+        <div class="dress-item">
+          <div class="dress-color" style="background:#3D3530;"></div>
+          <div class="dress-name">Dark Mocha</div>
+          <div class="dress-note">Alternatif</div>
+        </div>
+        <div class="dress-item">
+          <div class="dress-color" style="background:#EDE8DF;border:1px solid #ccc;"></div>
+          <div class="dress-name">Off White</div>
+          <div class="dress-note">Alternatif</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO & LOKASI -->
+<div class="panel" id="panel-info">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('info')">← Kembali</button>
+    <div class="panel-title">Info & Lokasi</div>
+    <div class="panel-index">07 / 07</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content">
+      <div class="p-eyebrow">Informasi Acara</div>
+      <div class="p-big" style="font-size:clamp(28px,5vw,72px)">Jakarta<br>24.08<br>2025</div>
+      <div class="p-detail">
+        Akad Nikah<br>
+        &nbsp;&nbsp;Masjid Al-Hikmah, Jl. Pahlawan No. 12<br>
+        &nbsp;&nbsp;08.00 – 10.00 WIB<br><br>
+        Resepsi<br>
+        &nbsp;&nbsp;Grand Ballroom Hotel Mulia<br>
+        &nbsp;&nbsp;Jl. Asia Afrika, Jakarta Selatan<br>
+        &nbsp;&nbsp;11.00 – 14.00 WIB
+      </div>
+      <div class="p-divider"></div>
+      <div class="p-detail">
+        Konfirmasi kehadiran paling lambat<br>
+        <strong style="color:var(--black)">17 Agustus 2025</strong><br><br>
+        Info lebih lanjut<br>
+        <strong style="color:var(--black)">+62 812 3456 7890</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<div class="panel" id="panel-quote">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('quote')">← Kembali</button>
+    <div class="panel-title">Pesan & Doa</div>
+    <div class="panel-index">— / —</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content" style="text-align:center">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,1.5vw,20px);font-style:italic;line-height:1.9;color:#333;max-width:480px;margin:0 auto;">
+        "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan dari jenismu sendiri, supaya kamu merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."
+      </div>
+      <div style="font-size:10px;letter-spacing:0.2em;color:var(--gray);margin-top:24px;text-transform:uppercase;">QS. Ar-Rum: 21</div>
+      <div style="width:32px;height:1px;background:var(--black);margin:32px auto;"></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(13px,1.3vw,18px);font-style:italic;color:#555;line-height:1.8;">
+        "Two people. One story.<br>A lifetime to write together."
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DATE -->
+<div class="panel" id="panel-date">
+  <div class="panel-bar">
+    <button class="panel-back" onclick="closePanel('date')">← Kembali</button>
+    <div class="panel-title">Save the Date</div>
+    <div class="panel-index">— / —</div>
+  </div>
+  <div class="panel-body">
+    <div class="p-content" style="text-align:center">
+      <div class="p-eyebrow" style="text-align:center">Mark Your Calendar</div>
+      <div class="p-big" style="font-size:clamp(48px,10vw,140px);text-align:center;line-height:0.85">24<br><span style="font-size:0.4em;letter-spacing:0.1em">AGUSTUS</span><br>2025</div>
+      <div class="p-divider" style="margin:24px auto;"></div>
+      <div id="cd-panel" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,5vw,72px);color:var(--red);">— Hari Lagi</div>
+      <div style="font-size:10px;letter-spacing:0.18em;color:var(--gray);margin-top:8px;text-transform:uppercase;">menuju hari bahagia</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // Countdown
+  function hitung() {
+    const target = new Date('2025-08-24T08:00:00');
+    const now = new Date();
+    const diff = Math.ceil((target - now) / 86400000);
+    const val = diff > 0 ? diff : 0;
+    const el1 = document.getElementById('cd');
+    const el2 = document.getElementById('cd-panel');
+    if (el1) el1.textContent = val;
+    if (el2) el2.textContent = val + ' Hari Lagi';
+  }
+  hitung();
+
+  // Panel open/close
+  function openPanel(id) {
+    document.getElementById('panel-' + id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePanel(id) {
+    document.getElementById('panel-' + id).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Close on ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.panel.active').forEach(p => p.classList.remove('active'));
+    }
+  });
+
+  // RSVP
+  function selRsvp(el) {
+    el.closest('.rsvp-radio-row').querySelectorAll('.rsvp-radio').forEach(r => r.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+  function kirimRsvp() {
+    const nama = document.getElementById('r-nama').value.trim();
+    if (!nama) { showToast('Mohon isi nama lengkap'); return; }
+    showToast('Terima kasih, ' + nama + '! Kami tunggu kehadiranmu ✓');
+    document.getElementById('r-nama').value = '';
+    document.getElementById('r-tamu').value = '';
+  }
+
+  // Copy
+  function copyText(t) {
+    navigator.clipboard.writeText(t)
+      .then(() => showToast('Tersalin: ' + t + ' ✓'))
+      .catch(() => showToast('Salin manual: ' + t));
+  }
+
+  // Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
