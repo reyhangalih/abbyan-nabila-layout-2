@@ -580,8 +580,27 @@ function showToast(){
 }
 
 // RSVP form
-const wishes=[];
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzB9CTuM_q2YmceDSqXXuDVkX1whyhs_x7z9gRuz6JGSDIqboc7Fu6JLfe4lRm9LH11/exec';
+const wishes = [];
+
+async function loadWishes() {
+  try {
+    const res = await fetch(SHEET_URL + '?callback=?', { mode: 'no-cors' });
+    // no-cors can't read response, use JSONP-style via script tag instead
+  } catch(_) {}
+}
+
+function fetchWishesFromSheet() {
+  const script = document.createElement('script');
+  window._sheetCallback = function(data) {
+    wishes.length = 0;
+    data.forEach(w => wishes.push({ name: w.nama, msg: w.ucapan, date: w.tanggal }));
+    renderWishes();
+    script.remove();
+  };
+  script.src = SHEET_URL + '?callback=_sheetCallback';
+  document.head.appendChild(script);
+}
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxn7dH4-aCJikCIAS-k9IWbAM8iIOWZq5mzI4mNXmO3dsOwAGRkLfW0bkZGVwvK4IH0/exec';
 
 async function submitRSVP(e) {
   e.preventDefault();
@@ -609,9 +628,10 @@ async function submitRSVP(e) {
       body: JSON.stringify({ nama, whatsapp, kehadiran, jumlahTamu, ucapan })
     });
 
-    // Tambah ke guestbook lokal
+    // Tambah sementara ke guestbook lokal, lalu reload dari sheet
     wishes.unshift({ name: nama, msg: ucapan, date: 'Baru saja' });
     renderWishes();
+    setTimeout(fetchWishesFromSheet, 1500);
     e.target.reset();
 
     toast.textContent = 'RSVP terkirim! Terima kasih 🙏';
@@ -655,6 +675,7 @@ document.getElementById('openBtn').addEventListener('click', () => {
 
 // Audio controls
 document.addEventListener('DOMContentLoaded', function() {
+  fetchWishesFromSheet();
 const bgAudio = document.getElementById('bgAudio');
 const audioBtn = document.getElementById('audioBtn');
 const audioIcon = document.getElementById('audioIcon');
