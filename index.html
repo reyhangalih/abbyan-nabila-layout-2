@@ -210,6 +210,11 @@ section{padding:80px 48px}
 </head>
 <body>
 
+<!-- BACKSOUND -->
+<audio id="bgAudio" loop preload="auto">
+  <source src="./Voxxes_-_Warm_Weather.mp3" type="audio/mpeg">
+</audio>
+
 <!-- COVER -->
 <div id="cover">
   <div class="cover-bg"></div>
@@ -620,6 +625,7 @@ document.getElementById('openBtn').addEventListener('click', () => {
 });
 
 // Audio controls
+document.addEventListener('DOMContentLoaded', function() {
 const bgAudio = document.getElementById('bgAudio');
 const audioBtn = document.getElementById('audioBtn');
 const audioIcon = document.getElementById('audioIcon');
@@ -654,14 +660,9 @@ audioBtn.addEventListener('click', () => {
 document.getElementById('openBtn').addEventListener('click', () => {
   setTimeout(tryPlay, 900);
 });
+}); // end DOMContentLoaded
 
 </script>
-
-
-<!-- BACKSOUND -->
-<audio id="bgAudio" loop preload="none">
-  <source src="https://archive.org/download/01airlafemmedargent/Air%20-%20Moon%20Safari%20%281998%29%20%5B24%20bit%20FLAC%5D%20vinyl/08%20-%20Air%20-%20Ce%20Matin-La.mp3" type="audio/mpeg">
-</audio>
 
 </body>
 </html>
